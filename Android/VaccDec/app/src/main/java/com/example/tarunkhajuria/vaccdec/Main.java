@@ -27,8 +27,7 @@ public class Main extends AppCompatActivity {
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
             bluetoothserver btserver(mBluetoothAdapter);
-
-
         }
+
     }
 }
