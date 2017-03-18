@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.jjoe64.graphview.*;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.view.
 import com.example.tarunkhajuria.vaccdec.bluetoothserver;
 
 
@@ -28,6 +29,10 @@ public class Main extends AppCompatActivity {
             }
             bluetoothserver btserver(mBluetoothAdapter);
         }
+        GraphView graph=(GraphView) findViewById(R.id.graph);
+        graph.addSeries();
+        graph.
+
 
     }
 }
