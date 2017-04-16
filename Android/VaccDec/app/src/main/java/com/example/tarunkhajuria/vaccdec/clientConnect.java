@@ -1,9 +1,9 @@
 package com.example.tarunkhajuria.vaccdec;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
-import andorid.bluetooth.Bluetooth
 import java.io.IOException;
 
 /**
@@ -13,10 +13,11 @@ import java.io.IOException;
 public class clientConnect extends Thread{
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
-
-    public clientConnect(BluetoothDevice device)
+    private final BluetoothAdapter mBluetoothAdapter;
+    public clientConnect(BluetoothDevice device, BluetoothAdapter btAdapter)
     {
         BluetoothSocket tmp=null;
+        mBluetoothAdapter=btAdapter;
         mmDevice=device;
         try{
             tmp=device.createRfcommSocketToServiceRecord(MY_UUID);
