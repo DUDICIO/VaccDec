@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 import java.io.IOException;
-
+import com.example.tarunkhajuria.vaccdec.manageConnectedSocket;
 /**
  * Created by tarunkhajuria on 16/04/17.
  */
@@ -41,9 +41,8 @@ public class clientConnect extends Thread{
             }
             return;
         }
-        manageConnectedSocket a(mmSocket);
+        manageConnectedSocket manager= new manageConnectedSocket(mmSocket);
+        manager.startReading();
     }
     }
 
-
-}
