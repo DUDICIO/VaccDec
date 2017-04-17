@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 import java.io.IOException;
+import java.util.UUID;
 import com.example.tarunkhajuria.vaccdec.manageConnectedSocket;
 /**
  * Created by tarunkhajuria on 16/04/17.
@@ -20,7 +21,7 @@ public class clientConnect extends Thread{
         mBluetoothAdapter=btAdapter;
         mmDevice=device;
         try{
-            tmp=device.createRfcommSocketToServiceRecord(MY_UUID);
+            tmp=device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
         }catch(Exception e)
         {
             Log.e("Bluetooth","Connection to create Client Socket",e);
@@ -41,8 +42,7 @@ public class clientConnect extends Thread{
             }
             return;
         }
-        manageConnectedSocket manager= new manageConnectedSocket(mmSocket);
-        manager.startReading();
+        manageConnectedSocket socket=new manageConnectedSocket(mmSocket);
     }
-    }
+}
 

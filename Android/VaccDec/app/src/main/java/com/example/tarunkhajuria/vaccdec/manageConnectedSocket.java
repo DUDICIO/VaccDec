@@ -15,7 +15,7 @@ public class manageConnectedSocket {
     InputStream mmInStream;
     OutputStream mmOutStream;
     private byte[] mmBuffer;
-    public void manageConnectedSocket(BluetoothSocket csocket)
+    public manageConnectedSocket(BluetoothSocket csocket)
     {
         mmSocket=csocket;
         try {
@@ -23,7 +23,10 @@ public class manageConnectedSocket {
         }catch(IOException inputError)
         {
             Log.e("Bluetooth","Input Stream object could not be created",inputError);
+         }
+
     }
+    public void receiver(){
         while(true)
         {
             try
@@ -34,5 +37,4 @@ public class manageConnectedSocket {
             }
         }
     }
-
 }

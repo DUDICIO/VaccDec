@@ -10,7 +10,7 @@ import com.jjoe64.graphview.*;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
-
+import android.util.Log;
 
 public class Main extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
@@ -27,6 +27,10 @@ public class Main extends AppCompatActivity {
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+            else{
+                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                registerReceiver(mReceiver, filter);
             }
         }
 
@@ -48,9 +52,10 @@ public class Main extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                String deviceHarwareAdress = device.getAddress();
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
-                String deviceHarwareAdress = device.getAddress();
+                Log.d("Bluetooth",deviceName);
             }
         }
     };
