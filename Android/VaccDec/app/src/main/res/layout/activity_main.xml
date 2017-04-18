@@ -15,5 +15,9 @@
         android:layout_height="wrap_content"
         android:text="VaccDec"
         android:layout_alignParentTop="true" />
-
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/discovered_android">
+    </ListView>
 </RelativeLayout>

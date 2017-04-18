@@ -25,10 +25,12 @@ public class Main extends AppCompatActivity {
             // Device does not support Bluetooth
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
+                Log.d("Bluetooth","Calls for enabling bluetooth");
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
             else{
+                Log.d("Bluetooth","Calls for enabling bluetooth");
                 IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
                 registerReceiver(mReceiver, filter);
             }
@@ -41,6 +43,7 @@ public class Main extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (requestCode == Activity.RESULT_OK) {
+                Log.d("Bluetooth","Callback bluetooth enabled");
                 IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
                 registerReceiver(mReceiver, filter);
             }
@@ -52,8 +55,8 @@ public class Main extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                String deviceHarwareAdress = device.getAddress();
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String deviceHarwareAdress = device.getAddress();
                 String deviceName = device.getName();
                 Log.d("Bluetooth",deviceName);
             }
