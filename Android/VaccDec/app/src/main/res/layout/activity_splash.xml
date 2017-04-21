@@ -14,22 +14,15 @@
          android:fitsSystemWindows. -->
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/vaccdecbackground"
-        android:id="@+id/imageView3" />
-
-    <TextView
-        android:text="VaccDecc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textSize="14px"/>
-
-    <ImageView
         android:layout_width="268dp"
         android:layout_height="436dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/vaccsureicon"
         android:id="@+id/imageView4" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/vaccdecbackground"
+        android:id="@+id/imageView3" />
 </FrameLayout>
