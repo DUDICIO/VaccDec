@@ -22,14 +22,9 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ImageView imgview=(ImageView)findViewById(R.id.imageView3);
-        imgview.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageView cap=(ImageView)findViewById(R.id.imageView4);
         AnimatorSet set= (AnimatorSet) AnimatorInflater.loadAnimator(this,R.animator.vaccrotate);
         set.setTarget(cap);
         set.start();
     }
-
-
-
 }

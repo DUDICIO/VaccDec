@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#000000"
     tools:context="com.example.tarunkhajuria.vaccdec.Splash">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -12,17 +12,23 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+    <AbsoluteLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="268dp"
+            android:layout_height="436dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/vaccsureicon"
+            android:id="@+id/imageView4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VaccDec"
+            android:textSize="50px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1000px"
+            />
+    </AbsoluteLayout>
 
-    <ImageView
-        android:layout_width="268dp"
-        android:layout_height="436dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/vaccsureicon"
-        android:id="@+id/imageView4" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/vaccdecbackground"
-        android:id="@+id/imageView3" />
 </FrameLayout>
