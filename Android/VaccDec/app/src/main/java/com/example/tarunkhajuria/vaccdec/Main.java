@@ -35,7 +35,10 @@ public class Main extends AppCompatActivity {
 
         ArrayAdapter<String> madapter= new ArrayAdapter<String>(this,R.layout.text);
         madapter.add("BT1");
+        madapter.add("BT2");
+        Log.d("Listview","Count:"+madapter.getCount());
         btlist.setAdapter(madapter);
+        madapter.add("Adasd");
         btlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
