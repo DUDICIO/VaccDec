@@ -97,7 +97,7 @@ public class Main extends AppCompatActivity {
                     Log.e("Bluetooth","Could not connect with error:"+e);
                 }
                 Intent stacitivty=new Intent(activitycontext,BluetoothService.class);
-                
+
 
 
             }
