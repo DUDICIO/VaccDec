@@ -18,7 +18,26 @@
             android:src="@drawable/vaccdecblue"
             android:id="@+id/vaccdecimg"
             android:layout_centerHorizontal="true"
-            android:/>
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/connect"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="90px"
+            android:text="Connect"
+            android:visibility="invisible"
+            android:textSize="50px"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sDevice"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120px"
+            android:text="Select Device"
+            android:textSize="50px"/>
+
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
