@@ -5,11 +5,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
+
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -26,6 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.content.ServiceConnection;
+import android.content.ComponentName;
+import android.os.IBinder;
+import android.os.Binder;
+
+import com.example.tarunkhajuria.vaccdec.BluetoothService.*;
 
 public class Main extends AppCompatActivity {
     private final static int REQUEST_ENABLE_BT = 1;
@@ -36,6 +41,8 @@ public class Main extends AppCompatActivity {
     private TextView sname;
     private TextView connect;
     private ImageView connImg;
+    private BluetoothService mservice;
+
     BluetoothSocket msocket;
     private Context activitycontext;
     @Override
@@ -43,6 +50,8 @@ public class Main extends AppCompatActivity {
         activitycontext=this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         //List view for Bluetooth Devices
         ListView btlist= (ListView) findViewById(R.id.devicesltview);
 
@@ -69,35 +78,33 @@ public class Main extends AppCompatActivity {
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
         } else {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
             if (!mBluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
             else{
                 mBluetoothAdapter.startDiscovery();
-                Log.d("Bluetooth","Start Discovery");
             }
         }
+
+
         //Bluetooth Connect
         connImg=(ImageView)findViewById(R.id.vaccdecimg);
         connImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                     msocket = selectedDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+
+                Intent bservice=new Intent(activitycontext,BluetoothService.class);
+                bindService(bservice,btconnection,BIND_AUTO_CREATE);
+                try{
+                    mservice.connectBt(selectedDevice);
                 }
                 catch(Exception e)
                 {
-                    Log.e("Bluetooth","Socket Not given:"+e);
+                    Log.e("Bluetooth",""+e);
                 }
-                try{
-                    msocket.connect();
-                }catch(IOException e)
-                {
-                    Log.e("Bluetooth","Could not connect with error:"+e);
-                }
-                Intent stacitivty=new Intent(activitycontext,BluetoothService.class);
-
+                Log.d("Bluetooth",""+mservice);
 
 
             }
@@ -112,11 +119,30 @@ public class Main extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("Bluetooth","Start Discovery");
                 mBluetoothAdapter.startDiscovery();
-
-
             }
         }
     }
+
+
+    ServiceConnection btconnection=new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            btbinder lbinder=(btbinder) service;
+            mservice=(BluetoothService)lbinder.getService();
+            if(mservice.connectBt(selectedDevice)==1)
+            {
+
+                Intent nactivity=new Intent(activitycontext,dataview.class);
+                startActivity(nactivity);
+            }
+        }
+    };
+
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
