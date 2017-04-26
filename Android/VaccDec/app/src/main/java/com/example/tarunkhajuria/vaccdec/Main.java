@@ -115,7 +115,6 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
-                Log.d("Bluetooth","Here");
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("Bluetooth","Start Discovery");
                 mBluetoothAdapter.startDiscovery();

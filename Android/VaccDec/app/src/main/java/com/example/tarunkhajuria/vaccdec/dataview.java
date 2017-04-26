@@ -10,6 +10,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import android.content.Intent;
 import com.example.tarunkhajuria.vaccdec.BluetoothService.*;
+import android.util.Log;
 public class dataview extends AppCompatActivity {
     private BluetoothService mservice;
     private LineGraphSeries<DataPoint> series;
@@ -23,6 +24,15 @@ public class dataview extends AppCompatActivity {
 
         Intent btintent=new Intent(this,BluetoothService.class);
         bindService(btintent,myconn,BIND_IMPORTANT);
+        new Thread(){
+            public void run() {
+                int i=0;
+                while (true) {
+                    i++;
+                    series.appendData(new DataPoint(i,10),true,100);
+                }
+            }
+        }.start();
 
 
     }
@@ -32,6 +42,7 @@ public class dataview extends AppCompatActivity {
             btbinder mybind= (btbinder)service;
             mservice=mybind.getService();
             mservice.readData(series);
+            Log.d("Event","Hppened");
         }
 
         @Override

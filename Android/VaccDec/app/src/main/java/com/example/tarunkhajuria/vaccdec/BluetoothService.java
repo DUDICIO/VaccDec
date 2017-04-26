@@ -12,7 +12,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import java.io.IOException;
 import java.util.UUID;
-
+import android.os.Message;
+import android.os.Handler;
 import java.io.InputStream;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -20,7 +21,9 @@ public class BluetoothService extends Service {
     private final IBinder mbinder=new btbinder();
     private BluetoothSocket msocket;
     private InputStream mstream;
+    private Handler mHandler= new Handler();
     private byte[] mbuffer = new byte[1024];
+    public LineGraphSeries mseries;
     public BluetoothService() {
     }
     public class btbinder extends Binder
@@ -52,6 +55,7 @@ public class BluetoothService extends Service {
     }
     public void readData(LineGraphSeries series)
     {
+        mseries=series;
      try{
          Log.d("BluetoothisConnected",""+msocket.isConnected());
          mstream=msocket.getInputStream();
@@ -63,9 +67,11 @@ public class BluetoothService extends Service {
             public void run() {
                 while (true) {
                     try {
-                        mstream.read(mbuffer);
+
+                        Log.d("mseries",""+mseries.getHighestValueX());
+                        int numBytes=mstream.read(mbuffer);
                         if (mbuffer != null) {
-                            Log.d("Bluetooh", "" + mbuffer[0]);
+                            String a=new String(mbuffer,"UTF-8");
                         }
                     } catch (IOException e) {
                         Log.d("Bluetooth", "" + e);
