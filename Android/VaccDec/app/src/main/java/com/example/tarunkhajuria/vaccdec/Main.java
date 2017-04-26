@@ -123,7 +123,14 @@ public class Main extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy()
+    {
+        if(mBluetoothAdapter.isDiscovering())
+        {
+            mBluetoothAdapter.cancelDiscovery();
+        }
+    }
     ServiceConnection btconnection=new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -134,6 +141,7 @@ public class Main extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             btbinder lbinder=(btbinder) service;
             mservice=(BluetoothService)lbinder.getService();
+            mBluetoothAdapter.cancelDiscovery();
             if(mservice.connectBt(selectedDevice)==1)
             {
 
@@ -150,11 +158,12 @@ public class Main extends AppCompatActivity {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceHarwareAdress = device.getAddress();
-                String deviceName = device.getName();
-                Log.d("Bluetooth",deviceName);
-                madapter.add(deviceName);
-                devicelist.add(device);
+                if(device!=null) {
+                    String deviceName = device.getName();
+                    Log.d("Bluetooth", "" + deviceName);
+                    madapter.add(deviceName);
+                    devicelist.add(device);
+                }
             }
         }
     };

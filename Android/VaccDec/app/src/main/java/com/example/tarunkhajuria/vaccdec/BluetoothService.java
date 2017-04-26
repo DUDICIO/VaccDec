@@ -13,11 +13,14 @@ import com.jjoe64.graphview.series.DataPoint;
 import java.io.IOException;
 import java.util.UUID;
 
+import java.io.InputStream;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 public class BluetoothService extends Service {
     private final IBinder mbinder=new btbinder();
     private BluetoothSocket msocket;
+    private InputStream mstream;
+    private byte[] mbuffer = new byte[1024];
     public BluetoothService() {
     }
     public class btbinder extends Binder
@@ -49,8 +52,31 @@ public class BluetoothService extends Service {
     }
     public void readData(LineGraphSeries series)
     {
+     try{
+         Log.d("BluetoothisConnected",""+msocket.isConnected());
+         mstream=msocket.getInputStream();
+     }catch (Exception e)
+     {
+         Log.e("Bluetooth","Error:"+e);
+     }
+        new Thread(){
+            public void run() {
+                while (true) {
+                    try {
+                        mstream.read(mbuffer);
+                        if (mbuffer != null) {
+                            Log.d("Bluetooh", "" + mbuffer[0]);
+                        }
+                    } catch (IOException e) {
+                        Log.d("Bluetooth", "" + e);
+                    }
+                }
+            }
+        }.start();
+
 
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {

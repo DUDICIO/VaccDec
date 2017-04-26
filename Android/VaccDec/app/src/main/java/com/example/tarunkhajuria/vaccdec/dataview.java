@@ -38,5 +38,5 @@ public class dataview extends AppCompatActivity {
         public void onServiceDisconnected(ComponentName name) {
 
         }
-    }
+    };
 }
