@@ -21,20 +21,12 @@ public class dataview extends AppCompatActivity {
         GraphView graph = (GraphView) findViewById(R.id.graph);
         series = new LineGraphSeries<>();
         graph.addSeries(series);
-
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(10);
+        graph.getGridLabelRenderer().setLabelVerticalWidth(100);
         Intent btintent=new Intent(this,BluetoothService.class);
         bindService(btintent,myconn,BIND_IMPORTANT);
-        new Thread(){
-            public void run() {
-                int i=0;
-                while (true) {
-                    i++;
-                    series.appendData(new DataPoint(i,10),true,100);
-                }
-            }
-        }.start();
-
-
     }
     private ServiceConnection myconn=new ServiceConnection() {
         @Override

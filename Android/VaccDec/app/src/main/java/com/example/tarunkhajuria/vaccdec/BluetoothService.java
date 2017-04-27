@@ -53,9 +53,8 @@ public class BluetoothService extends Service {
         return 1;
 
     }
-    public void readData(LineGraphSeries series)
+    public void readData(final LineGraphSeries series)
     {
-        mseries=series;
      try{
          Log.d("BluetoothisConnected",""+msocket.isConnected());
          mstream=msocket.getInputStream();
@@ -68,16 +67,55 @@ public class BluetoothService extends Service {
                 while (true) {
                     try {
 
-                        Log.d("mseries",""+mseries.getHighestValueX());
                         int numBytes=mstream.read(mbuffer);
                         if (mbuffer != null) {
                             String a=new String(mbuffer,"UTF-8");
+                            Log.d("BeforeData",""+a);
+                            setdata(a);
                         }
                     } catch (IOException e) {
                         Log.d("Bluetooth", "" + e);
                     }
                 }
             }
+            void setdata(String data)
+            {   float temp=0,time=0;
+                boolean halt=false;
+                for(int i=0;i<data.length();i++)
+                {
+                    switch (data.charAt(i))
+                    {
+                        case 'C':temp=getnum(data,i+1);
+                                break;
+
+                        case 't':time=getnum(data,i+1);
+                                if(temp!=0) {
+                                    halt = true;
+                                }
+                                break;
+                        default:break;
+                    }
+                    if(halt)
+                    {
+                        break;
+                    }
+                }
+                if(time!=0 && temp!=0) {
+                    Log.d("Data","temp:"+temp+"time:"+time);
+                    series.appendData(new DataPoint(time, temp), true, 20);
+                }
+            }
+            float getnum(String data,int i)
+            {
+                String num="";
+                for(;data.charAt(i)!='\t' && data.charAt(i)!='\n';i++)
+                {
+                    if(data.charAt(i)!='t'&&data.charAt(i)!='C')
+                        num+=data.charAt(i);
+                }
+                return Float.parseFloat(num);
+            }
+
         }.start();
 
 
