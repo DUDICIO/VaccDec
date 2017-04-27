@@ -79,7 +79,7 @@ public class BluetoothService extends Service {
                 }
             }
             void setdata(String data)
-            {   float temp=0,time=0;
+            {   float temp=-30,time=-30,prevtime=-30,prevtemp=-30;
                 boolean halt=false;
                 for(int i=0;i<data.length();i++)
                 {
@@ -89,7 +89,7 @@ public class BluetoothService extends Service {
                                 break;
 
                         case 't':time=getnum(data,i+1);
-                                if(temp!=0) {
+                                if(temp!=-30) {
                                     halt = true;
                                 }
                                 break;
@@ -100,9 +100,13 @@ public class BluetoothService extends Service {
                         break;
                     }
                 }
-                if(time!=0 && temp!=0) {
+                if(time!=-30 && temp!=-30) {
                     Log.d("Data","temp:"+temp+"time:"+time);
-                    series.appendData(new DataPoint(time, temp), true, 20);
+                    if(time>prevtime) {
+                        series.appendData(new DataPoint(time, temp), true, 20);
+                        prevtime = time;
+                        prevtemp = temp;
+                    }
                 }
             }
             float getnum(String data,int i)
@@ -113,7 +117,10 @@ public class BluetoothService extends Service {
                     if(data.charAt(i)!='t'&&data.charAt(i)!='C')
                         num+=data.charAt(i);
                 }
-                return Float.parseFloat(num);
+                if(num=="")
+                    return -30;
+                else
+                    return Float.parseFloat(num);
             }
 
         }.start();
