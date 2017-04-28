@@ -63,23 +63,27 @@ public class BluetoothService extends Service {
          Log.e("Bluetooth","Error:"+e);
      }
         new Thread(){
+            float prevtime=-30,prevtemp=-30,time,temp;
             public void run() {
                 while (true) {
                     try {
-
+                        mbuffer=new byte[1024];
+                        while(mstream.available()<50);
                         int numBytes=mstream.read(mbuffer);
                         if (mbuffer != null) {
-                            String a=new String(mbuffer,"UTF-8");
+                            String a=new String(mbuffer,0,numBytes);
+                            mbuffer=null;
                             Log.d("BeforeData",""+a);
                             setdata(a);
                         }
                     } catch (IOException e) {
-                        Log.d("Bluetooth", "" + e);
+                        Log.e("Exception", "" + e);
                     }
                 }
             }
+
             void setdata(String data)
-            {   float temp=-30,time=-30,prevtime=-30,prevtemp=-30;
+            {   temp=-30;time=-30;
                 boolean halt=false;
                 for(int i=0;i<data.length();i++)
                 {
@@ -103,24 +107,35 @@ public class BluetoothService extends Service {
                 if(time!=-30 && temp!=-30) {
                     Log.d("Data","temp:"+temp+"time:"+time);
                     if(time>prevtime) {
-                        series.appendData(new DataPoint(time, temp), true, 20);
+                        Log.d("Values","time:"+time);
+                        Log.d("Values","prevtime:"+prevtime);
                         prevtime = time;
                         prevtemp = temp;
+                        series.appendData(new DataPoint(time, temp), true, 20);
+
                     }
                 }
             }
             float getnum(String data,int i)
             {
                 String num="";
-                for(;data.charAt(i)!='\t' && data.charAt(i)!='\n';i++)
+                if(i<data.length())
                 {
-                    if(data.charAt(i)!='t'&&data.charAt(i)!='C')
-                        num+=data.charAt(i);
+                    for(;data.charAt(i)!='\t' && data.charAt(i)!='\n';i++)
+                    {
+                        if((data.charAt(i)>=48 && data.charAt(i)<=57)||data.charAt(i)=='.')
+                            num+=data.charAt(i);
+                        else
+                            return -30;
+                    }
+                    if(num!="")
+                        return Float.parseFloat(num);
+                    else
+                        return -30;
                 }
-                if(num=="")
-                    return -30;
                 else
-                    return Float.parseFloat(num);
+                    return -30;
+
             }
 
         }.start();
